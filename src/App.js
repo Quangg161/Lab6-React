@@ -1,24 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import Products from './components/Products';
+import ProductDetail from './components/ProductDetail';
+import Cart from './components/Cart';
+import Header from './components/header';
+import {useState} from 'react'
 
 function App() {
+  const [ cartItems, setCartItems] = useState([])
+  const handleAddToCart = (product) => {
+    setCartItems([...cartItems,product])
+  }
+  const handleCheckout = () =>{
+    setCartItems([])
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <BrowserRouter>
+   <Header cartItems={cartItems}/>
+    <Routes>
+      <Route index element = {<Products handleAddToCart={handleAddToCart} />}/>
+      <Route path = '/detail/:id' element ={<ProductDetail handleAddToCart={handleAddToCart} />}/>
+      <Route path = '/cart' element ={<Cart cartItems={cartItems} handleCheckout={handleCheckout} />}/>
+    </Routes>
+   </BrowserRouter> 
   );
 }
 
